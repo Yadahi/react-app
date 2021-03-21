@@ -4,42 +4,10 @@ import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'rea
 class DishDetail extends Component {
   constructor(props) {
     super(props);
-
   }
 
-  renderComments(comments) {
-    if (comments == null) {
-      return (
-        <div></div>
-      );
-    }
-    const menucomment = comments.map((comment) => {
-      return (
-        <div>
-          <p>{comment.comment}</p>
-          <p>-- {comment.author},&nbsp;
-          {new Intl.DateTimeFormat("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "2-digit"
-            }).format(new Date(comment.date))}
-          </p>
-        </div>
-      );
-    });
+  renderDish(dish) {
 
-    return (
-      <div>
-        <h4>Comments</h4>
-        <ul className="list-unstyled">
-          {menucomment}
-        </ul>
-      </div>
-    )
-  }
-
-  renderDish() {
-    const dish = this.props.dish
     if (dish != null) {
       return (
         <div className="row">
@@ -53,7 +21,6 @@ class DishDetail extends Component {
             </Card>
           </div>
           <div className="col-12 col-md-5 m-1">
-            {this.renderComments(this.props.dish.comments)}
           </div>
         </div>
 
@@ -65,11 +32,44 @@ class DishDetail extends Component {
     }
   }
 
+  renderComments(comments) {
+    if (comments != null) {
+      return (
+        <div>
+          {comments.map((comment) => {
+            return (
+              <div>
+                <p>{comment.comment}</p>
+                <p>-- {comment.author},&nbsp;
+                {new Intl.DateTimeFormat("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit"
+                  }).format(new Date(comment.date))}
+                </p>
+
+              </div>
+              );
+            })
+          }
+        </div>
+      );
+    } else {
+      return (
+        <div></div>
+      )
+    }
+  }
+
   render() {
+    console.log(this.props.dish)
 
     return (
       <div className="container">
-          {this.renderDish()}
+
+          {this.renderDish(this.props.dish)}
+          {this.renderComments(this.props.dish.comments)}
+
       </div>
     );
   }
